@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Tunnel</title>
+<script src="processing-1.0.0.js"></script>
+<script src="init.js"></script> 
+ </head>
+<body>
+<script type="application/processing">
+void setup() {
+  size(1600, 800);
+  stroke(255);
+  frameRate(25); 
+}
+
+void draw() {
+    background(0);
+    noFill(255,20,100)
+    strokeWeight(5);
+    text(x,20,20);
+    translate(width/2,height/2)
+    rectMode(CENTER);
+    quad(0,0,30,30);
+}
+</script>
+<canvas width="200" height="200"></canvas>
+</body>
+</html>

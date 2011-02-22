@@ -1,0 +1,63 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"> 
+    <head> 
+      <title>K3D Test Page - HTML 5 Canvas and JavaScript demo</title> 
+      <script type="text/javascript" src="k3d/mathlib.js"></script> 
+      <script type="text/javascript" src="k3d/k3d.js"></script> 
+      <script type="text/javascript" src="k3d/k3dmain.js"></script> 
+      <script src="http://platform.twitter.com/widgets.js" type="text/javascript"></script> 
+      <script> 
+   var a = navigator.userAgent;
+   if (a.indexOf("iPhone;") != -1 || a.indexOf("iPod;") != -1 || a.indexOf("iPad;") != -1)
+   {
+      window.location.href = "k3d_test_mobile.html";
+   }
+   
+   function openHelp()
+   {
+      document.getElementById("help").style.display = "block";
+   }
+   
+   function closeHelp()
+   {
+      document.getElementById("help").style.display = "none";
+   }
+      </script> 
+      <style type="text/css"> 
+         body { font-family: Arial, Helvetica; color: black }
+         .title { padding: 8px; text-align: center; font-weight: bold; font-size: 1.2em; color: darkblue }
+         P { padding-left: 2em; padding-top: 0; line-height: 1em; font-size: 0.75em }
+         P.left { padding-left: 1em; line-height: 1em }
+         a, a:visited, a:active, a:hover { color: #000088 }
+         .button-overlay { float: right }
+      </style> 
+   </head> 
+   
+   <body onload="onloadHandler();" style="background-color: #fff"> 
+      <div class="button-overlay"><a href="http://twitter.com/share?url=http://www.kevs3d.co.uk/dev/canvask3d/k3d_test.html&text=K3D%20-%20a%203D%20rendering%20Javascript%20library%20in%20HTML5%20canvas!%20%23html5%20%23javascript%20%233d" class="twitter-share-button">Tweet</a></div> 
+      <div style="text-align:center"> 
+         <p class="title">K3D HTML5 Canvas Demos</p> 
+         <div id="help" style="display:none;position:absolute;background-color:#eeeeee;border: 2px solid grey;padding:32px;margin:48px;z-index:100"> 
+The K3D engine ("Kevs 3D", no relation to the k-3d library of similar name) written entirely in JavaScript and HTML5 canvas. All 3D maths is hand cranked and rendering performed using the nifty Canvas APIs - no 3D plugins or Canvas3D extensions required.
+<br/><br/> 
+The code for the simple-but-fast 3D pipeline was originally written in C/C++ back in the coding dark-ages of 1996, converted to a very-nifty-for-the-time-thanks Java 1.0 Applet in 1998 (the first 3D in Java that I know of! and well before the Java3D APIs existed) and recently converted to modern JavaScript and HTML5 Canvas.
+<br/><br/> 
+Runs best on Chome, Safari and Firefox browsers. Chrome 5 is the fastest!
+<br/><br/> 
+Objects can be displayed as points, wireframe, solid polygons, textured polygons and shaded using plain colour, depthcued (z-order) or light-sourced - things can be rotated around and moved about to make cool demos. A simple linear-additive lighting model with any number of coloured lights can be applied to solid objects.
+<br/><br/> 
+            <div style="text-align:center"><a href="#" onclick="closeHelp()">Close</a></div> 
+         </div> 
+         <div style="width:240;display:inline-block"> 
+            <canvas id="canvas1" width="440" height="440" title="3Dtests" style="background-color:#000000"></canvas> 
+            
+         </div> 
+         <div> 
+            <p>Click the demos above to start or stop them! Last Updated: 09/06/10</p> 
+            <p>JavaScript and HTML5 Canvas demo by Kevin Roast - <a href="http://twitter.com/kevinroast" target="new">follow me on Twitter</a></p> 
+            <p><a href="#" onclick="openHelp()">Tell me more!</a> <a href="canvask3d-src.zip">Download the JavaScript source code</a> <a href="../index.html">More HTML5 Canvas demos!</a></p> 
+         </div> 
+      </div> 
+   </body> 
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>shapetest</title>
+<script src="processing-1.0.0.js"></script>
+<script src="init.js"></script> 
+ </head>
+<body>
+<script type="application/processing">
+// Set drag switch to false
+boolean dragging=false;
+
+// If use drags mouse...
+void mouseDragged()
+{
+  // Set drag switch to true
+  dragging=true;
+}
+  
+// If user releases mouse...
+void mouseReleased()
+{
+  // ..user is no-longer dragging
+  dragging=false;
+}
+
+var x=20;
+var y=50;
+
+void setup() 
+{
+  size(1600, 400);
+  frameRate(25); 
+}
+void draw() 
+{
+    background(0);
+    translate(58, 48, 0);
+    stroke(255,100,100);
+    box(40, 20, 50);
+    lights();
+    sphere(28);
+    
+    rect(x, y, 100, 100);
+
+    // If the cursor is within 2x the radius of current circle...
+    if( dist(x,y,mouseX,mouseY) < 50 )
+    {
+        // Change fill color to green.
+        fill(164,287,228,255);
+
+        // Remember user has circle "selected"  
+       sel=1;      
+       // If user has mouse down and is moving...
+       if(dragging)
+       {       
+            // Move circle to circle position
+            x=mouseX;
+            y=mouseY;
+        }
+    }
+    else 
+    {
+      // Keep fill color blue
+       fill(164,128,187,255);
+      // User has nothing "selected"
+       sel=0;
+    }
+
+
+}
+</script>
+<canvas width="1200" height="200"></canvas>
+</body>
+</html>

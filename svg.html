@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>SVG</title>
+<script src="processing-1.0.0.js"></script>
+<script src="init.js"></script> 
+ </head>
+<body>
+<script type="application/processing">
+void setup() 
+{
+  size(1600, 800);
+  frameRate(25); 
+}
+void draw() 
+{
+    background(0);
+    PShape s;
+    s = loadShape("elipsejolie.svg");
+    smooth();
+    shape(s, 10, 10, 80, 80);
+}
+</script>
+<canvas width="200" height="200"></canvas>
+</body>
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE HTML>
+<html lang="en">
+    <head>
+        <title>Zoom blur - 03</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="initial-scale=1.0; maximum-scale=1.0; user-scalable=0;"/>
+        <style type="text/css">
+            * { color: #808080; }
+            body { background-color: #555; background-image: url('space.jpg'); background-position: top center; margin: 0px; overflow: hidden; }
+            #info { position: absolute; top: 0px; width: 100%; padding: 5px; font-family:Monospace; font-size:13px; text-align:center; }
+        </style>
+    </head>
+    <body>
+
+        <div id="container"></div>
+        <div id="info">Rollover the sun to create a eclipse.</div>      
+
+        <script type="text/javascript">
+
+            var SCREEN_WIDTH = window.innerWidth, SCREEN_HEIGHT = window.innerHeight,
+            SCREEN_WIDTH_HALF = window.innerWidth / 2, SCREEN_HEIGHT_HALF = window.innerHeight / 2,
+            LEVELS = 32;
+
+            var context, shape, shapeContext;
+            var planet;
+
+            var mouseX = 0, mouseY = 0;
+            var easedMouseX = 0, easedMouseY = 0;
+
+            init();
+            setInterval(loop, 1000/30);
+
+            function init() {
+            
+                var container, canvas;
+            
+                container = document.getElementById('container');
+
+                //planet = document.createElement("canvas");
+                //planet.width = 150;
+                //planet.height = 150;
+                //planet.style.position = 'absolute';
+                //container.appendChild(planet);
+
+                //planet
+                //planetContext = planet.getContext("2d");
+                //planetContext.beginPath();
+                //planetContext.rect(100, 100, 2, 450);
+                //planetContext.fillStyle = "rgb(200,200, 205)";
+                //planetContext.fill();
+
+                //définition canvas principal
+                canvas = document.createElement("canvas");
+                canvas.width = 500;
+                canvas.height = 500;
+                canvas.style.position = 'absolute';
+                canvas.style.top = (SCREEN_HEIGHT_HALF - 250) + "px";
+                canvas.style.left = (SCREEN_WIDTH_HALF - 250) + "px";
+                container.appendChild(canvas);
+
+                //récupère les fonctions de dessin de l'élément canvas
+                context = canvas.getContext("2d");
+
+                shape = document.createElement("canvas");
+                shape.width = 128;
+                shape.height = 128;
+
+                shapeContext = shape.getContext("2d");
+
+                document.addEventListener('mousemove', onDocumentMouseMove, false);
+            }
+
+            function onDocumentMouseMove(event) {
+            
+                mouseX = - (event.clientX - SCREEN_WIDTH_HALF) * 0.001;
+                mouseY = - (event.clientY - SCREEN_HEIGHT_HALF) * 0.001;
+                
+            }
+
+            function loop() {
+            
+                easedMouseX += (mouseX - easedMouseX) * .2;
+                easedMouseY += (mouseY - easedMouseY) * .2;
+
+                //deplacement planet
+                //planet.style.top = (SCREEN_HEIGHT_HALF - 75 - (easedMouseY * 1000)) + "px";
+                //planet.style.left = (SCREEN_WIDTH_HALF - 75 - (easedMouseX * 1000)) + "px";
+
+                shapeContext.clearRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+
+                shapeContext.globalCompositeOperation = "source-over";
+                shapeContext.beginPath();
+                shapeContext.rect(0,0, 200, 200);
+                shapeContext.fillStyle = "rgb(102, 204, 255)";
+                shapeContext.fill();
+
+                shapeContext.globalCompositeOperation = "destination-out";
+                shapeContext.beginPath();
+                //le truc qui fait effectivement l'ombre
+                shapeContext.rect(100 - (easedMouseX * 1000), 100 - (easedMouseY * 1000), 10,450);
+                shapeContext.fillStyle = "rgb(0, 255, 255)";
+                shapeContext.fill();
+
+                context.clearRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+
+                //effet
+                for (var i = 0; i < LEVELS; i ++) {
+                
+                    var size = 128 + i * 10;
+                    var size_half = size * 0.5;
+                    var x = 200 - size_half;
+                    var y = 200 - size_half;
+
+                    context.globalAlpha = (256 / ((i + 4) * (i + 4) * 20));
+                    context.drawImage(shape, x, y, size, size);
+                    
+                }
+
+            }
+    
+        </script>
+    </body>
+</html>

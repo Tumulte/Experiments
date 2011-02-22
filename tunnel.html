@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Tunnel</title>
+<script src="processing-1.0.0.js"></script>
+<script src="init.js"></script> 
+ </head>
+<body>
+<script type="application/processing">
+void setup() {
+  size(1600, 800);
+  stroke(255);
+  frameRate(25); 
+}
+float x=0.001;
+float y=0.0001;
+void draw() {
+    background(0);
+    noFill()
+    strokeWeight(5);
+    text(x,20,20);
+    translate(width/2,height/2)
+    rectMode(CENTER);
+    for(i=0;i<=10;i++)
+    {
+        scale(x);
+        rect(0,0,400,400);
+    }
+    
+    
+    if(x<1.95)
+    {
+        x+=y;
+    }
+    else
+    {
+        noLoop();  
+    }
+    //acceleration
+    if(x<0.6)
+    {
+        y+=0.0001;
+    }
+    else if(x>0.6 && x<1.5)
+    {
+        y+=0.0003;
+    }    
+    else
+    { 
+        y-=0.0007;
+    } 
+}
+</script>
+<canvas width="200" height="200"></canvas>
+</body>
+</html>
