@@ -48,8 +48,6 @@ function init()
       with (obj)
       {
          drawmode = "wireframe";
-         //rotation y x z
-         addgamma = 0; addtheta = 0; addphi = 0.2;
          aboutx = 0; abouty = -0; aboutz = -4;
          scale = 100;
          init(
@@ -61,62 +59,15 @@ function init()
       k3dmain1.addK3DObject(obj);
    
    
-   // add lightsource for solid object demo
-   var light = new K3D.LightSource({x:70,y:70,z:-70}, [0.0,0.75,1.0], 70.0);
-   light.addgamma = 2.5;
-   k3dmain5.addLightSource(light);
-   light = new K3D.LightSource({x:-50,y:-50,z:-70}, [1.0,1.0,0.0], 70.0);
-   light.addgamma = 1.5;
-   k3dmain5.addLightSource(light);
-   // add an object to represent the lightsource so it is visible in the scene
-   var lightObj = new K3D.K3DObject();
-   with (lightObj)
-   {
-      color = [0,192,255];
-      drawmode = "point";
-      shademode = "plain";
-      addgamma = 2.5;
-      linescale = 16.0;
-      init([{x:70,y:70,z:-70}], [], []);
-   }
-   k3dmain5.addK3DObject(lightObj);
-   lightObj = new K3D.K3DObject();
-   with (lightObj)
-   {
-      color = [255,255,0];
-      drawmode = "point";
-      shademode = "plain";
-      addgamma = 1.5;
-      linescale = 16.0;
-      init([{x:-50,y:-50,z:-70}], [], []);
-   }
-   k3dmain5.addK3DObject(lightObj);
-   
-   // render first frames
-   k3dmain1.tick();
-   // use motion blur background fill
-   k3dmain2.fillStyle = "rgba(0,0,0, 0.50)";
-   k3dmain2.tick();
-   k3dmain3.tick();
-   k3dmain4.fillStyle = "rgba(0,0,0, 0.50)";
-   k3dmain4.tick();
-   k3dmain5.tick();
-   
-   // start main demo
-   k3dmain1.paused = false;
-   k3dmain1.tick();
-   
-   
    // bind document keyhandler to aid debugging
    document.onkeydown = function(event)
    {
       var keyCode = (event === null ? window.event.keyCode : event.keyCode);
-      
+      var obj = k3dmain1.objects[0];
       switch (keyCode)
       {
          case KEY.SPACE:
          {
-            var obj = k3dmain3.objects[0];
             switch (obj.drawmode)
             {
                case "point":
@@ -134,6 +85,112 @@ function init()
             }
             break;
          }
+         case KEY.LEFT:
+         {
+        	 obj.addphi = -1;
+         }
+         break;
+         case KEY.RIGHT:
+         {
+        	 obj.addphi = 1;
+         }
+         break;
+         case KEY.UP:
+         {
+        	 obj.addtheta = -1;
+         }
+         break;
+         case KEY.DOWN:
+         {
+        	 obj.addtheta = 1;
+         }
+         break;
       }
    };
+   document.onkeyup = function(event){
+	   obj.addphi = 0;
+	   obj.addtheta = 0;
+   }
+}
+
+//nifty drag/touch event capture code borrowed from Mr Doob http://mrdoob.com/
+var targetRotationX = 0;
+var targetRotationOnMouseDownX = 0;
+var mouseX = 0;
+var mouseXOnMouseDown = 0;
+var targetRotationY = 0;
+var targetRotationOnMouseDownY = 0;
+var mouseY = 0;
+var mouseYOnMouseDown = 0;
+
+var windowHalfX = window.innerWidth / 2;
+var windowHalfY = window.innerHeight / 2;
+
+document.addEventListener('mousedown', onDocumentMouseDown, false);
+document.addEventListener('touchstart', onDocumentTouchStart, false);
+document.addEventListener('touchmove', onDocumentTouchMove, false);
+
+function onDocumentMouseDown( event ) {
+
+	event.preventDefault();
+	
+	document.addEventListener('mousemove', onDocumentMouseMove, false);
+	document.addEventListener('mouseup', onDocumentMouseUp, false);
+	document.addEventListener('mouseout', onDocumentMouseOut, false);
+	
+	mouseXOnMouseDown = event.clientX - windowHalfX;
+	targetRotationOnMouseDownX = targetRotationX;
+	mouseYOnMouseDown = event.clientY - windowHalfY;
+	targetRotationOnMouseDownY = targetRotationY;
+}
+
+function onDocumentMouseMove( event )
+{
+
+	mouseX = event.clientX - windowHalfX;
+	targetRotationX = targetRotationOnMouseDownX + (mouseX - mouseXOnMouseDown) * 0.02;
+	mouseY = event.clientY - windowHalfY;
+	targetRotationY = targetRotationOnMouseDownY + (mouseY - mouseYOnMouseDown) * 0.02;
+}
+
+function onDocumentMouseUp( event )
+{
+
+	document.removeEventListener('mousemove', onDocumentMouseMove, false);
+	document.removeEventListener('mouseup', onDocumentMouseUp, false);
+	document.removeEventListener('mouseout', onDocumentMouseOut, false);
+}
+
+function onDocumentMouseOut( event )
+{
+
+	document.removeEventListener('mousemove', onDocumentMouseMove, false);
+	document.removeEventListener('mouseup', onDocumentMouseUp, false);
+	document.removeEventListener('mouseout', onDocumentMouseOut, false);
+}
+
+function onDocumentTouchStart( event )
+{
+	if (event.touches.length == 1)
+	{
+		event.preventDefault();
+
+		mouseXOnMouseDown = event.touches[0].pageX - windowHalfX;
+		targetRotationOnMouseDownX = targetRotationX;
+		mouseYOnMouseDown = event.touches[0].pageY - windowHalfY;
+		targetRotationOnMouseDownY = targetRotationY;
+	}
+}
+
+function onDocumentTouchMove( event )
+{
+	if (event.touches.length == 1)
+	{
+		event.preventDefault();
+		
+		mouseX = event.touches[0].pageX - windowHalfX;
+		targetRotationX = targetRotationOnMouseDownX + (mouseX - mouseXOnMouseDown) * 0.05;
+		mouseY = event.touches[0].pageY - windowHalfY;
+		targetRotationY = targetRotationOnMouseDownY + (mouseX - mouseYOnMouseDown) * 0.05;
+	}
 }

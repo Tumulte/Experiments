@@ -43,43 +43,18 @@ function onloadHandler()
       drawmode = "solid";
       shademode = "lightsource";  // one of "plain", "depthcue", "lightsource"
       doublesided = true;
-      aboutx = -size/2; abouty = -size/2; aboutz = 0;
+      aboutx = 0; abouty = 0; aboutz = 0;
+      scale = 100;
+      init(
+    		  [{x:-1,y:1,z:-1}, {x:1,y:1,z:-1}, {x:1,y:-1,z:-1}, {x:-1,y:-1,z:-1}, {x:-1,y:1,z:1}, {x:1,y:1,z:1}, {x:1,y:-1,z:1}],
+              [{a:0,b:1}, {a:1,b:2}, {a:2,b:3}, {a:3,b:0}, {a:4,b:5}, {a:5,b:6}, {a:0,b:4}, {a:1,b:5}, {a:2,b:6}, ],
+              [{color:[255,255,255],vertices:[0,1,2,3]},{color:[255,255,255],vertices:[0,4,5,1]},{color:[255,255,255],vertices:[1,5,6,2]},{color:[255,255,0],vertices:[2,6,3]},{color:[0,255,255],vertices:[3,4,0]},{color:[255,0,255],vertices:[6,5,4]}]
+      );
    }
    k3dmain.callback = function()
    {
       obj.ophi += (targetRotationX - (obj.ophi * RAD));
       obj.otheta += (targetRotationY - (obj.otheta * RAD));
-      
-      // manipulate points
-      // TODO: add a flag to k3dobject to "regenerate normals"!
-      var pts = obj.points,
-          offsetx = offsety = waveoffset;
-      for (var i=0; i<pts.length; i++)
-      {
-         pts[i].z = ((Math.sin(offsetx) * RAD) + (Math.cos(offsety) * RAD)) * 1024;
-         pts[i].x += (Math.sin(offsetx) * RAD) * 32;
-         pts[i].y += (Math.cos(offsety) * RAD) * 64;
-         offsetx += 0.1;
-         offsety += 0.4;
-      }
-      waveoffset += 0.2;
-      
-      // recalculate normal vectors for face data - as points have moved
-      for (var i=0, j=obj.faces.length; i<j; i++)
-      {
-         // First calculate normals from 3 points on the poly:
-         // Vector 1 = Vertex B - Vertex A
-         // Vector 2 = Vertex C - Vertex A
-         var vertices = obj.faces[i].vertices;
-         var x1 = pts[vertices[1]].x - pts[vertices[0]].x;
-         var y1 = pts[vertices[1]].y - pts[vertices[0]].y;
-         var z1 = pts[vertices[1]].z - pts[vertices[0]].z;
-         var x2 = pts[vertices[2]].x - pts[vertices[0]].x;
-         var y2 = pts[vertices[2]].y - pts[vertices[0]].y;
-         var z2 = pts[vertices[2]].z - pts[vertices[0]].z;
-         // save the normal vector as part of the face data structure
-         obj.faces[i].normal = calcNormalVector(x1, y1, z1, x2, y2, z2);
-      }
    };
    k3dmain.addK3DObject(obj);
    
